@@ -84,7 +84,7 @@ def load_dataset_val(VAL_DATA_PATH, config):
     df = pd.read_csv(os.path.join(VAL_DATA_PATH, 'waypoints.csv'))
     y = np.empty((data_n, MASK_DIM, MASK_DIM, 1), dtype='float32')
     y_cluster = np.empty((data_n, MASK_DIM, MASK_DIM))
-    for index in tqdm(range(data_n)):
+    for index in tqdm(range(data_n), desc='Loading validation set'):
         mask = cv2.imread(os.path.join(VAL_DATA_PATH, f'img{index}.png'), cv2.IMREAD_GRAYSCALE)
         mask = cv2.bitwise_not(mask)
         points = df.loc[df['N_img'] == f'img{index}'].to_numpy()[:,1:].astype('uint32')
@@ -129,7 +129,7 @@ def load_dataset_test(TEST_DATA_PATH, config):
     X = np.empty((data_n, MASK_DIM, MASK_DIM), dtype='float32')
     y = np.empty((data_n, MASK_DIM, MASK_DIM, 1), dtype='float32')
     y_cluster = np.zeros((data_n, MASK_DIM, MASK_DIM), dtype='float32')
-    for index,img in tqdm(enumerate(img_list), total=data_n):
+    for index,img in tqdm(enumerate(img_list), total=data_n, desc='Loading test set'):
         name = img.split('/')[-1][:-4]
         mask = cv2.bitwise_not(cv2.imread(img, cv2.IMREAD_GRAYSCALE)) # open grayscale and invert 255
         points = df.loc[df['N_img'] == name].to_numpy()[:,1:].astype('uint32')

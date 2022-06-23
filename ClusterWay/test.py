@@ -72,8 +72,8 @@ def test(args, config):
                                 config['KERNEL_SIZE'],
                                 config['N'], config['MASK_DIM'])
     elif 'cluster_way' in name_model:
-        curved = '_curved' if args.curved else ''
-        name_classic = f'deep_way{curved}_{args.i}'
+        j = name_model.find('cluster_way')
+        name_classic = name_model[:j] + 'deep_way' + name_model[j+11:]
         
         model_classic = build_deepway(name_classic, config['FILTERS'],
                                 config['KERNEL_SIZE'],

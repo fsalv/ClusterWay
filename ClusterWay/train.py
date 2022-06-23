@@ -33,7 +33,7 @@ def get_args():
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     
     parser.add_argument("--name", type=str, default='cluster_way', help="Model name")
-    parser.add_argument("--curved", type=bool, default=False, help="Model type")
+    parser.add_argument("--curved", action='store_true', help="Model type")
     parser.add_argument("--i", type=int, default=0,  help="Iteration")
     parser.add_argument("--gpu", type=int, default=0, help="GPU device index")
     parser.add_argument("--config_file", type=str, default=os.path.join(PATH_DIR, 'config.json'),
@@ -69,7 +69,7 @@ def get_args():
                         help="Weights data path")
     parser.add_argument("--LOG_DIR", type=str, default=os.path.join(PATH_DIR, 'logs'),
                         help="Logger and Tensorboard log folder")
-    parser.add_argument("--clear_file", type=bool, default=False, help="Clear log file")
+    parser.add_argument("--clear_file", action='store_true', help="Clear log file")
     parser.add_argument("--seed", type=int, default=42,
                         help="Seed for clustering reproducibility. Does not influence model training.")
     return parser.parse_args()
@@ -81,8 +81,8 @@ def train(args, config):
     #load data
     train_data_path = args.TRAIN_DATA_PATH if not args.curved else args.TRAIN_CURVED_DATA_PATH
     val_data_path = args.VAL_DATA_PATH if not args.curved else args.VAL_CURVED_DATA_PATH
-    t = f"Training on {os.path.relpath(train_data_path, PATH_DIR)} dataset."
-    t += f"Validating on {os.path.relpath(val_data_path, PATH_DIR)} dataset."
+    t = f"Training on {os.path.relpath(train_data_path, PATH_DIR)} dataset.\n"
+    t += f"Validating on {os.path.relpath(val_data_path, PATH_DIR)} dataset.\n"
     logger.log(t)
     
     dataset_train = get_dataset_train(train_data_path, config)
@@ -95,14 +95,18 @@ def train(args, config):
                                 config['KERNEL_SIZE'],
                                 config['R'], config['MASK_DIM'])
     elif 'cluster_way' in name_model:
-        curved = '_curved' if args.curved else ''
-        name_classic = f'deep_way{curved}_{args.i}'
+        j = name_model.find('cluster_way')
+        name_classic = name_model[:j] + 'deep_way' + name_model[j+11:]
         
         model_classic = build_deepway(name_classic, config['FILTERS'],
                                 config['KERNEL_SIZE'],
                                 config['R'], config['MASK_DIM'], True)
-        Trainer(model_classic, config, loss={'mask': deepPathLoss('none')}, logger=logger,
-                optimizer=tf.keras.optimizers.Adam(0.), checkpoint_dir=args.PATH_WEIGHTS)
+        try:
+            Trainer(model_classic, config, loss={'mask': deepWayLoss('none')}, logger=logger,
+                optimizer=tf.keras.optimizers.Adam(0.), checkpoint_dir=args.PATH_WEIGHTS, force_restore=True)
+        except FileNotFoundError:
+            logger.log(f"Cannot restore checkpoint for model '{name_classic}'.\nDid you train backbone and estimation head before?")
+            raise
         deepway_net = build_clusterway(name_model, model_classic, config['FILTERS'],
                                 config['KERNEL_SIZE'], out_feats=config['OUT_FEATS'])
     else:
@@ -119,10 +123,11 @@ def train(args, config):
     # train phase       
     trainer.fit(dataset_train, epochs=config['EPOCHS'], validation_data=dataset_val,
                 tensorboard=True, accumulating_gradients=config['accumulating_gradients'], initial_epoch=0)
-    logger.log(f"Done. Restoring best weights.\n")
+    logger.log(f"Done. Restoring best weights.")
     trainer.restore()
 
     # test phase
+    logger.log(f"Testing phase.")
     clustering = 'cluster_way' in name_model # clustering head
     for test_folder in (args.TEST_DATA_PATH, args.TEST_CURVED_DATA_PATH,
                         args.TEST_SATELLITE_DATA_PATH, args.TEST_SATELLITE_CURVED_DATA_PATH):

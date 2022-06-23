@@ -21,7 +21,7 @@ from utils.tools import APCalculator
 
 class Trainer:
     def __init__(self, model, config, loss, optimizer, loss_weights=None, checkpoint_dir='bin',
-                 log_dir='logs', do_not_restore=False, logger=None):
+                 log_dir='logs', do_not_restore=False, force_restore=False, logger=None):
         
         self.print = logger.log if logger is not None else print
         self.config = config
@@ -80,13 +80,18 @@ class Trainer:
         self.checkpoint_manager = tf.train.CheckpointManager(checkpoint=self.checkpoint,
                                                              max_to_keep=1, directory=self.ckp_dir)
         if not do_not_restore:
-            self.restore()
+            self.restore(force_restore)
+        elif force_restore:
+            self.print(f"[WARNING] Both 'do_not_restore' and 'force_restore' set. Checkpoint is not restored.")
         
     
-    def restore(self):
+    def restore(self, force=False):
         if self.checkpoint_manager.latest_checkpoint:
             self.checkpoint.restore(self.checkpoint_manager.latest_checkpoint).expect_partial()
             self.print(f'Model {self.model.name} restored from checkpoint at step {self.checkpoint.step.numpy()}.')
+        elif force:
+            raise FileNotFoundError(f"Cannot find checkpoint for model '{self.name}' but 'force_restore' is set.")
+            
 
             
     @property
