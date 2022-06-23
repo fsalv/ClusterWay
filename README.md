@@ -1,7 +1,7 @@
 [![arXiv](http://img.shields.io/badge/arXiv-2001.09136-B31B1B.svg)](https://arxiv.org/abs/2010.16322)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-<h1 align="center"> ~ ClusterWay ~ </h1>
+<h1 align="center"> ClusterWay </h1>
 
 <p align="center">
   <img src=media/architecture.png>
