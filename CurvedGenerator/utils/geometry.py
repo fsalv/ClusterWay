@@ -13,7 +13,6 @@
 # limitations under the License.
 # ==============================================================================
 
-
 import numpy as np
 
 
@@ -29,12 +28,14 @@ def compute_distance(p1,p2=np.array([0,0])):
 
 
 
-def random_displ(max_pix=5,min_pix=0,shape=None):
+def random_displ(max_pix=5,min_pix=0,shape=None,rng=None):
     """
         Get random displacements between min_pix and max_pix
     """
-    disp = np.random.randint(min_pix,max_pix,shape)
-    disp *= np.random.choice([-1,1],shape)
+    if rng is None:
+        rng = np.random
+    disp = rng.randint(min_pix,max_pix,shape)
+    disp *= rng.choice([-1,1],shape)
     return disp
 
 

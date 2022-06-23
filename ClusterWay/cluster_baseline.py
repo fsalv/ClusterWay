@@ -38,7 +38,7 @@ def get_args():
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     
     parser.add_argument("--name", type=str, default='deep_way', help="Model name")
-    parser.add_argument("--curved", type=bool, default=False, help="Model type")
+    parser.add_argument("--curved", action='store_true', help="Model type")
     parser.add_argument("--i", type=int, default=0,  help="Iteration")
     parser.add_argument("--gpu", type=int, default=0, help="GPU device index")
     parser.add_argument("--config_file", type=str, default=os.path.join(PATH_DIR, 'config.json'),
@@ -61,7 +61,7 @@ def get_args():
                         help="Weights data path")
     parser.add_argument("--LOG_DIR", type=str, default=os.path.join(PATH_DIR, 'logs'),
                         help="Logger and Tensorboard log folder")
-    parser.add_argument("--clear_file", type=bool, default=False, help="Clear log file")
+    parser.add_argument("--clear_file", action='store_true', help="Clear log file")
     parser.add_argument("--seed", type=int, default=None, help="Seed for clustering reproducibility")
     return parser.parse_args()
 

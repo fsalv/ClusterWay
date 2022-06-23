@@ -16,7 +16,6 @@
 import tensorflow as tf
 import numpy as np
 from utils.train import Trainer
-from utils.tools import deepWayLoss
 
 class Mish(tf.keras.layers.Layer):
     def __init__(self, **kwargs):
