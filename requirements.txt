@@ -1,0 +1,9 @@
+tensorflow
+scipy
+opencv-python
+scikit-learn
+matplotlib
+pandas
+numpy==1.19
+tqdm
+bezier
