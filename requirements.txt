@@ -4,6 +4,6 @@ opencv-python
 scikit-learn
 matplotlib
 pandas
-numpy==1.19
+numpy
 tqdm
 bezier
