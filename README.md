@@ -11,7 +11,6 @@
 This repository contains all the code related to the paper [Waypoint Generation in Row-based Crops with Deep Learning and Contrastive Clustering](https://arxiv.org/abs/2010.16322), a deep learning model able to predict the position of waypoints in row-crop fields and cluster them with a single forward pass.
 
 # 1 Getting Started
-## 1.1 Installation
 
 1. Clone this repository
 
