@@ -150,7 +150,7 @@ def show(img,path=None,dim=(7,7),markersize=3,axis=True):
         
         
 class RotationalPredictor():
-    def __init__(self, model, X, config, seed=42):
+    def __init__(self, model, X, config, seed=42, dim=(15,15)):
         self.config = config
         self.seed = seed
         self.slider = widgets.FloatSlider(min=-90, max=90, step=2, description='Rotation:')
@@ -162,6 +162,7 @@ class RotationalPredictor():
         
         self.model = model
         self.X = X
+        self.dim = dim
               
         
     def predict(self, **info):
@@ -189,7 +190,7 @@ class RotationalPredictor():
             else:
                 wp_class = None
 
-            visualize_mask(np.bitwise_not(img2.astype('bool')), wp=pred[0], dim=(15,15), rad=3, wp_class=wp_class)
+            visualize_mask(np.bitwise_not(img2.astype('bool')), wp=pred[0], dim=self.dim, rad=3, wp_class=wp_class)
     
     
     def on_button_clicked(self, k):

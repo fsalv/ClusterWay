@@ -36,6 +36,8 @@ def get_args():
     parser.add_argument("--curved", action='store_true', help="Model type")
     parser.add_argument("--i", type=int, default=0,  help="Iteration")
     parser.add_argument("--gpu", type=int, default=0, help="GPU device index")
+    parser.add_argument("--test", type=bool, default=False,
+                        help="Whether to automatically test the model at the end of the training.")
     parser.add_argument("--config_file", type=str, default=os.path.join(PATH_DIR, 'config.json'),
                         help="Config file")
     
@@ -123,36 +125,37 @@ def train(args, config):
     # train phase       
     trainer.fit(dataset_train, epochs=config['EPOCHS'], validation_data=dataset_val,
                 tensorboard=True, accumulating_gradients=config['accumulating_gradients'], initial_epoch=0)
-    logger.log(f"Done. Restoring best weights.")
-    trainer.restore()
+    logger.log(f"Done.")
 
-    # test phase
-    logger.log(f"Testing phase.")
-    clustering = 'cluster_way' in name_model # clustering head
-    for test_folder in (args.TEST_DATA_PATH, args.TEST_CURVED_DATA_PATH,
-                        args.TEST_SATELLITE_DATA_PATH, args.TEST_SATELLITE_CURVED_DATA_PATH):
-        X, _, _, df = load_dataset_test(test_folder, config)
-        AP = APCalculator(X, df, deepway_net, test_folder==args.TEST_SATELLITE_CURVED_DATA_PATH)
-        AP.interpret(conf_min=config['conf_min_test'], K=config['K'], wp_prox_sup_thresh=config['wp_sup_thresh'])
-        t = f"Test metric on {os.path.relpath(test_folder, PATH_DIR)} dataset:"
-        if clustering:
-            cl_acc, errors, no_cl = AP.cluster_accuracy(conf=config['conf_cl_test'], K=config['K'],
-                                                        wp_prox_sup_thresh=config['wp_sup_thresh'],
-                                                        return_errors=True, seed=args.seed)
-            t += f"\n\t cl_acc: {cl_acc}\n\t errors: {errors}\n\t no_cl: {no_cl}"       
-        for DIST_RANGE in (2,3,4,6,8):
-            ap, _, _ =  AP.compute(DIST_RANGE, conf_min=config['conf_min_test'],
-                                   K=config['K'], wp_prox_sup_thresh=config['wp_sup_thresh'])
-            t += f"\n\t ap@{DIST_RANGE}: {ap}"
-        t += "\n"
-        logger.log(t)
+    if args.test:
+        # test phase
+        logger.log(f"Testing phase. Restoring best weights.")
+        trainer.restore()
+        clustering = 'cluster_way' in name_model # clustering head
+        for test_folder in (args.TEST_DATA_PATH, args.TEST_CURVED_DATA_PATH,
+                            args.TEST_SATELLITE_DATA_PATH, args.TEST_SATELLITE_CURVED_DATA_PATH):
+            X, _, _, df = load_dataset_test(test_folder, config)
+            AP = APCalculator(X, df, deepway_net, test_folder==args.TEST_SATELLITE_CURVED_DATA_PATH)
+            AP.interpret(conf_min=config['conf_min_test'], K=config['K'], wp_prox_sup_thresh=config['wp_sup_thresh'])
+            t = f"Test metric on {os.path.relpath(test_folder, PATH_DIR)} dataset:"
+            if clustering:
+                cl_acc, errors, no_cl = AP.cluster_accuracy(conf=config['conf_cl_test'], K=config['K'],
+                                                            wp_prox_sup_thresh=config['wp_sup_thresh'],
+                                                            return_errors=True, seed=args.seed)
+                t += f"\n\t cl_acc: {cl_acc}\n\t errors: {errors}\n\t no_cl: {no_cl}"       
+            for DIST_RANGE in (2,3,4,6,8):
+                ap, _, _ =  AP.compute(DIST_RANGE, conf_min=config['conf_min_test'],
+                                       K=config['K'], wp_prox_sup_thresh=config['wp_sup_thresh'])
+                t += f"\n\t ap@{DIST_RANGE}: {ap}"
+            t += "\n"
+            logger.log(t)
 
 
         
 def main():
     global logger
     args = get_args()
-    logger = Logger(os.path.join(args.LOG_DIR, 'log.txt'), clear_file = args.clear_file,
+    logger = Logger(os.path.join(args.LOG_DIR, 'log_train.txt'), clear_file = args.clear_file,
                     add_time=True, print_to_stdout=True)
     OOMlogger = Logger(os.path.join(args.LOG_DIR, 'OOM.txt'))  # to notify the configurations that cause OOM
     
