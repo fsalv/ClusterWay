@@ -68,7 +68,7 @@ You can find scripts to test all the models inside the ```scripts``` folder. To 
 ./scripts/clustering_baseline_pretrained.sh
 ```
 
-With the ```Visualization.ipynb``` notebook you can easily visualize the detection and clustering results of a model of your choice on specific image.
+With the ```Visualization.ipynb``` notebook you can easily visualize the detection and clustering results of a model of your choice on specific images.
 
 <p align="center">
   <img src=media/visualizer.gif>
