@@ -78,7 +78,7 @@ With the ```Visualization.ipynb``` notebook you can easily visualize the detecti
 <br/>
 
 ## Citation
-If you enjoyed this repository and you want to cite our work, you can refer to the Arxiv version of the paper [here](https://doi.org/10.1016/j.compag.2021.106091).
+If you enjoyed this repository and you want to cite our work, you can refer to the arXiv version of the paper [here](https://doi.org/10.1016/j.compag.2021.106091).
 
 ```
 BIBTEX
