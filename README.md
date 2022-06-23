@@ -4,7 +4,7 @@
 <h1 align="center"> ~ ClusterWay ~ </h1>
 
 <p align="center">
-  <img src=media/deep_way_net.png>
+  <img src=media/architecture.png>
 </p>
 
 
@@ -68,11 +68,16 @@ You can find scripts to test all the models inside the ```scripts``` folder. To 
 ./scripts/clustering_baseline_pretrained.sh
 ```
 
-With the ```Visualization.ipynb``` notebook you can easily visualize the detection and clustering results of a model of your choice on specific image.
+With the ```Visualization.ipynb``` notebook you can easily visualize the detection and clustering results of a model of your choice on specific images.
+
+<p align="center">
+  <img src=media/visualizer.gif>
+</p>
 
 **Warning:** Undertrained models can cause a lock during testing due to the high number of predictions over threshold. Increase ```conf_min_test``` in the configuration file if you experience a similar issue.
 
 <br/>
+
 ## Citation
 If you enjoyed this repository and you want to cite our work, you can refer to the Arxiv version of the paper [here](https://doi.org/10.1016/j.compag.2021.106091).
 
