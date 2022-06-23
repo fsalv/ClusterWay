@@ -158,8 +158,8 @@ def pred_module(x):
     return tf.keras.layers.Concatenate()([x_0, x_1])
 
 
-def build_deepway(name_model, filters = 32, kernel_size = 3, N = 2, MASK_DIM = 800,
-                          high_level_features_as_output = False):
+def build_deepway(name_model, filters = 32, kernel_size = 3, R = 2,
+                  MASK_DIM = 800, high_level_features_as_output = False):
     
     input_tensor = tf.keras.layers.Input(shape=(MASK_DIM,MASK_DIM))
     x = input_tensor
@@ -172,7 +172,7 @@ def build_deepway(name_model, filters = 32, kernel_size = 3, N = 2, MASK_DIM = 8
     x = Mish()(x)
     
     # main corpus
-    for i in range(N):
+    for i in range(R):
         x = resa_red_module(x, filters=filters, kernel_size=kernel_size)
         
     # downsampling
@@ -197,7 +197,7 @@ def build_deepway(name_model, filters = 32, kernel_size = 3, N = 2, MASK_DIM = 8
 
 
 def build_clusterway(name_model, model_classic, filters = 32, kernel_size = 3,
-                          MASK_DIM = 800, out_feats = None, high_level_features_as_output = False):
+                     out_feats = None, high_level_features_as_output = False):
     
     for l in model_classic.layers:
         l.trainable = False

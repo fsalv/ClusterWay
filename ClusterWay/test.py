@@ -77,11 +77,10 @@ def test(args, config):
         
         model_classic = build_deepway(name_classic, config['FILTERS'],
                                 config['KERNEL_SIZE'],
-                                config['N'], config['MASK_DIM'], True)
+                                config['R'], config['MASK_DIM'], True)
      
         deepway_net = build_clusterway(name_model, model_classic, config['FILTERS'],
-                                config['KERNEL_SIZE'], config['MASK_DIM'], 
-                                out_feats=config['OUT_FEATS'])
+                                config['KERNEL_SIZE'], out_feats=config['OUT_FEATS'])
     else:
         raise ValueError(f'Wrong model {name_model}.')
         

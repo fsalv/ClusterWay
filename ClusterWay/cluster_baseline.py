@@ -143,7 +143,7 @@ def cluster(args, config):
     if 'deep_way' in name_model:
         deepway_net = build_deepway(name_model, config['FILTERS'],
                                 config['KERNEL_SIZE'],
-                                config['N'], config['MASK_DIM'])
+                                config['R'], config['MASK_DIM'])
     else:
         raise ValueError(f'Wrong model {name_model}.') # clustering baseline is computed for classic deep_way only
     

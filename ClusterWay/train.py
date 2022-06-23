@@ -93,19 +93,18 @@ def train(args, config):
     if 'deep_way' in name_model:
         deepway_net = build_deepway(name_model, config['FILTERS'],
                                 config['KERNEL_SIZE'],
-                                config['N'], config['MASK_DIM'])
+                                config['R'], config['MASK_DIM'])
     elif 'cluster_way' in name_model:
         curved = '_curved' if args.curved else ''
         name_classic = f'deep_way{curved}_{args.i}'
         
         model_classic = build_deepway(name_classic, config['FILTERS'],
                                 config['KERNEL_SIZE'],
-                                config['N'], config['MASK_DIM'], True)
+                                config['R'], config['MASK_DIM'], True)
         Trainer(model_classic, config, loss={'mask': deepPathLoss('none')}, logger=logger,
                 optimizer=tf.keras.optimizers.Adam(0.), checkpoint_dir=args.PATH_WEIGHTS)
         deepway_net = build_clusterway(name_model, model_classic, config['FILTERS'],
-                                config['KERNEL_SIZE'], config['MASK_DIM'], 
-                                out_feats=config['OUT_FEATS'])
+                                config['KERNEL_SIZE'], out_feats=config['OUT_FEATS'])
     else:
         raise ValueError(f'Wrong model {name_model}.')
         
