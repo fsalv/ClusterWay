@@ -1,4 +1,4 @@
-[![arXiv](http://img.shields.io/badge/arXiv-2001.09136-B31B1B.svg)](https://arxiv.org/abs/2010.16322)
+[![arXiv](http://img.shields.io/badge/arXiv-2001.09136-B31B1B.svg)](https://arxiv.org/abs/2206.11623)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 <h1 align="center"> ClusterWay </h1>
@@ -8,7 +8,7 @@
 </p>
 
 
-This repository contains all the code related to the paper [Waypoint Generation in Row-based Crops with Deep Learning and Contrastive Clustering](https://arxiv.org/abs/2010.16322), a deep learning model able to predict the position of waypoints in row-crop fields and cluster them with a single forward pass.
+This repository contains all the code related to the paper [Waypoint Generation in Row-based Crops with Deep Learning and Contrastive Clustering](https://arxiv.org/abs/2206.11623), a deep learning model able to predict the position of waypoints in row-crop fields and cluster them with a single forward pass.
 
 # 1 Getting Started
 
@@ -78,10 +78,16 @@ With the ```Visualization.ipynb``` notebook you can easily visualize the detecti
 <br/>
 
 ## Citation
-If you enjoyed this repository and you want to cite our work, you can refer to the arXiv version of the paper [here](https://doi.org/10.1016/j.compag.2021.106091).
+If you enjoyed this repository and you want to cite our work, you can refer to the arXiv version of the paper [here] (https://doi.org/10.48550/arXiv.2206.11623).
 
 ```
-BIBTEX
+@article{salvetti2022waypoint,
+  title = {Waypoint Generation in Row-based Crops with Deep Learning and Contrastive Clustering},
+  author = {Salvetti, Francesco and Angarano, Simone and Martini, Mauro and Cerrato, Simone and Chiaberge, Marcello},
+  journal = {arXiv preprint arXiv:2206.11623}, 
+  year = {2022},
+  }
+
 ```
 
 <br/>
