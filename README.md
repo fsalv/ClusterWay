@@ -92,4 +92,4 @@ If you enjoyed this repository and you want to cite our work, you can refer to t
 
 <br/>
 <sub> <b> Note on the satellite dataset: </b> </br>
-The 150 masks of the real-world remote-sensed dataset (100 straight and 50 curved) have been derived by manual labeling of images taken from Google Maps. Google policy for the products of its satellite service can be found [here](https://www.google.com/permissions/geoguidelines/). Images can be used for reasearch purposes by giving the proper attribution to the owner. However, for this repository we chose to release masks only and not the original satellite images. </sub> 
+The 150 masks of the real-world remote-sensed dataset (100 straight and 50 curved) have been derived by manual labeling of images taken from Google Maps. Google policy for the products of its satellite service can be found <a href="https://www.google.com/permissions/geoguidelines/"> here</a>. Images can be used for reasearch purposes by giving the proper attribution to the owner. However, for this repository we chose to release masks only and not the original satellite images. </sub> 
